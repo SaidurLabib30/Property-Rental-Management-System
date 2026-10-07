@@ -1,9 +1,12 @@
+// User roles in the system
 export type UserRole = 'owner' | 'tenant' | 'agent' | 'admin';
 
+// Property-related types
 export type PropertyType = 'apartment' | 'house' | 'condo' | 'studio' | 'villa' | 'office';
 export type PropertyStatus = 'available' | 'rented' | 'pending' | 'maintenance';
 export type ApplicationStatus = 'pending' | 'approved' | 'rejected' | 'under_review';
 
+// User entity with authentication and profile data
 export interface User {
   id: string;
   name: string;
@@ -16,6 +19,7 @@ export interface User {
   banned?: boolean;
 }
 
+// Property listing entity with all details
 export interface Property {
   id: string;
   title: string;
@@ -39,6 +43,7 @@ export interface Property {
   createdAt: string;
 }
 
+// Rental application submitted by tenant
 export interface Application {
   id: string;
   propertyId: string;
@@ -50,6 +55,7 @@ export interface Application {
   updatedAt: string;
 }
 
+// Payment record for rent collection
 export interface Payment {
   id: string;
   propertyId: string;
@@ -60,6 +66,7 @@ export interface Payment {
   method: string;
 }
 
+// Maintenance complaint or support request
 export interface Complaint {
   id: string;
   userId: string;
@@ -71,6 +78,7 @@ export interface Complaint {
   updatedAt: string;
 }
 
+// Rental agreement between owner and tenant
 export interface Agreement {
   id: string;
   propertyId: string;
@@ -84,6 +92,7 @@ export interface Agreement {
   createdAt: string;
 }
 
+// Aggregated dashboard statistics
 export interface DashboardStats {
   totalProperties: number;
   occupiedProperties: number;

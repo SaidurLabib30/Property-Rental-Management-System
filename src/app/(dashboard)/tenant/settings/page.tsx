@@ -1,3 +1,6 @@
+// Tenant "Settings" page.
+// A simple profile form (name/email/phone) for the tenant account. Inputs use
+// placeholder defaultValues; the Save button is not wired to an action yet.
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';

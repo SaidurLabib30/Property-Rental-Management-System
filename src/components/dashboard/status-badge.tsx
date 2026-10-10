@@ -1,6 +1,11 @@
+// status-badge.tsx
+// A small colored pill used to show a status (e.g. "available", "pending").
+// `class-variance-authority` (cva) defines the color variants; pass `variant`
+// to pick one. Falls back to the "default" (primary) style.
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
+// Each variant maps to a background/text color pair, with dark-mode versions.
 const badgeVariants = cva(
   "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {

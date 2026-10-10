@@ -1,5 +1,9 @@
 "use client"
 
+// scroll-area.tsx
+// Custom scrollable container built on Radix UI. ScrollArea wraps content in a
+// styled viewport with a themed scrollbar; ScrollBar renders the draggable
+// vertical/horizontal bar.
 import * as React from "react"
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
 

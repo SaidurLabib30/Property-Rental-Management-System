@@ -1,5 +1,8 @@
 "use client";
 
+// Admin "User Management" page.
+// Lists every platform user with verification/ban status, plus summary counts
+// per role. Reads from mock data; the Add/View buttons are not wired yet.
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +10,7 @@ import { mockUsers } from '@/data/mockData';
 import { StatusBadge } from '@/components/dashboard/status-badge';
 
 export default function AdminUsersPage() {
+  // All users (demo data). The counts below are derived with .filter by role.
   const users = mockUsers;
 
   return (
@@ -21,7 +25,7 @@ export default function AdminUsersPage() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        <div className="stat-grid grid grid-cols-1 sm:grid-cols-4 gap-4">
           <Card className="border-0 shadow-sm">
             <CardContent className="p-6">
               <div className="text-sm text-muted-foreground mb-1">Total Users</div>
@@ -57,6 +61,7 @@ export default function AdminUsersPage() {
               {users.map(user => (
                   <div key={user.id} className="flex items-center justify-between p-4 bg-muted rounded-lg">
                   <div className="flex items-center gap-3">
+                    {/* Avatar shows the user's initials, built from their name */}
                     <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
                       {user.name.split(' ').map(n => n[0]).join('')}
                     </div>

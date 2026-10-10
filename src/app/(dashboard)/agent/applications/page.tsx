@@ -1,10 +1,14 @@
 "use client";
 
+// Agent "Rental Applications" page.
+// Lists tenant applications for the agent to review, each with Approve/Reject
+// buttons (not wired yet). Reads from mock data.
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { mockApplications } from '@/data/mockData';
 
 export default function AgentApplicationsPage() {
+  // All applications (demo data).
   const applications = mockApplications;
 
   return (

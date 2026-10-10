@@ -1,7 +1,11 @@
+// Textarea: a styled multi-line text input.
+// A thin wrapper around the native <textarea> element (shadcn/ui style).
+// Exports Textarea.
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+// Renders the <textarea> with app styling, focus ring, and invalid states.
 function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
   return (
     <textarea

@@ -1,25 +1,34 @@
 "use client"
 
+// Select: a dropdown for choosing one option from a list.
+// Wraps Radix UI's Select primitives with app (shadcn/ui-style) styling.
+// Exports the Select root plus its parts: Group, Value, Trigger, Content,
+// Label, Item, Separator, and the ScrollUp/ScrollDown buttons.
+
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { Check, ChevronDown, ChevronUp } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+// Root wrapper that holds the dropdown's open/close and selection state.
 function Select({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Root>) {
   return <SelectPrimitive.Root data-slot="select" {...props} />
 }
 
+// Groups related items together inside the menu.
 function SelectGroup({ ...props }: React.ComponentProps<typeof SelectPrimitive.Group>) {
   return <SelectPrimitive.Group data-slot="select-group" {...props} />
 }
 
+// Displays the currently selected value inside the trigger.
 function SelectValue({ ...props }: React.ComponentProps<typeof SelectPrimitive.Value>) {
   return <SelectPrimitive.Value data-slot="select-value" {...props} />
 }
 
+// The clickable button that opens the dropdown; shows a down-chevron icon.
 function SelectTrigger({
   className,
   size = "default",
@@ -46,6 +55,7 @@ function SelectTrigger({
   )
 }
 
+// The floating panel (rendered in a portal) that lists the options.
 function SelectContent({
   className,
   children,
@@ -81,6 +91,7 @@ function SelectContent({
   )
 }
 
+// A small heading that labels a group of items.
 function SelectLabel({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Label>) {
   return (
     <SelectPrimitive.Label
@@ -91,6 +102,7 @@ function SelectLabel({ className, ...props }: React.ComponentProps<typeof Select
   )
 }
 
+// A single selectable option; shows a check icon when it is chosen.
 function SelectItem({ className, children, ...props }: React.ComponentProps<typeof SelectPrimitive.Item>) {
   return (
     <SelectPrimitive.Item
@@ -111,6 +123,7 @@ function SelectItem({ className, children, ...props }: React.ComponentProps<type
   )
 }
 
+// A thin dividing line between items or groups.
 function SelectSeparator({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Separator>) {
   return (
     <SelectPrimitive.Separator
@@ -121,6 +134,7 @@ function SelectSeparator({ className, ...props }: React.ComponentProps<typeof Se
   )
 }
 
+// Button at the top that scrolls up through a long list of items.
 function SelectScrollUpButton({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
   return (
     <SelectPrimitive.ScrollUpButton
@@ -133,6 +147,7 @@ function SelectScrollUpButton({ className, ...props }: React.ComponentProps<type
   )
 }
 
+// Button at the bottom that scrolls down through a long list of items.
 function SelectScrollDownButton({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
   return (
     <SelectPrimitive.ScrollDownButton

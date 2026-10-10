@@ -1,9 +1,15 @@
 "use client";
 
+// chart-card.tsx
+// A single card that renders one of three Recharts chart types (line, bar, or
+// pie) from the data it is given. Dashboards reuse it for all their charts.
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
 import { LucideIcon } from 'lucide-react';
 
+// Props describe the chart: its title, which chart `type` to draw, the data
+// array, the field to plot (`dataKey`), the category field (`xAxisKey`), and
+// optional custom colors.
 interface ChartCardProps {
   title: string;
   icon?: LucideIcon;
@@ -15,7 +21,9 @@ interface ChartCardProps {
   className?: string;
 }
 
-const COLORS = ['#2563eb', '#16a34a', '#f59e0b', '#ef4444', '#8b5cf6'];
+// Default color palette used when no `colors` prop is passed
+// (navy, professional blue, amber, green, slate — matching the app theme).
+const COLORS = ['#1E3A5F', '#2563EB', '#F59E0B', '#16A34A', '#64748B'];
 
 export function ChartCard({ title, type, data, dataKey, xAxisKey = 'name', colors = COLORS, className }: ChartCardProps) {
   return (
@@ -25,7 +33,9 @@ export function ChartCard({ title, type, data, dataKey, xAxisKey = 'name', color
       </CardHeader>
       <CardContent>
         <div className="h-64">
+          {/* ResponsiveContainer makes the chart fill its parent box */}
           <ResponsiveContainer width="100%" height="100%">
+            {/* Pick the chart to render based on the `type` prop */}
             {type === 'line' ? (
               <LineChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
@@ -43,6 +53,7 @@ export function ChartCard({ title, type, data, dataKey, xAxisKey = 'name', color
                 <Bar dataKey={dataKey} fill={colors[0]} radius={[4, 4, 0, 0]} />
               </BarChart>
             ) : (
+              // Pie chart: one colored slice per data entry
               <PieChart>
                 <Pie
                   data={data}
@@ -51,7 +62,7 @@ export function ChartCard({ title, type, data, dataKey, xAxisKey = 'name', color
                   labelLine={false}
                   label={({ name, percent }) => `${name}: ${((percent ?? 0) * 100).toFixed(0)}%`}
                   outerRadius={80}
-                  fill="#8884d8"
+                  fill="#1E3A5F"
                   dataKey={dataKey}
                 >
                   {data.map((entry, index) => (

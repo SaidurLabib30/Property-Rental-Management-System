@@ -1,10 +1,16 @@
 "use client";
 
+// coverflow-carousel.tsx
+// A 3D "coverflow" image carousel: cards rotate and recede into the distance
+// around a center card. Supports drag/swipe, keyboard arrows, looping, and an
+// optional caption/pagination/navigation. All motion is done by directly
+// setting CSS transforms on each card inside an animation loop (no library).
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+// Use layout effect in the browser, fall back to normal effect on the server.
 const useIsoLayoutEffect =
   typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
 
@@ -32,6 +38,9 @@ export interface CoverflowCarouselProps {
   label?: string;
   className?: string;
   cardClassName?: string;
+  // When true, the carousel advances on its own every `autoplayDelay` ms.
+  autoplay?: boolean;
+  autoplayDelay?: number;
 }
 
 export function CoverflowCarousel({
@@ -50,9 +59,16 @@ export function CoverflowCarousel({
   label = "Cover carousel",
   className,
   cardClassName,
+  autoplay = false,
+  autoplayDelay = 3500,
 }: CoverflowCarouselProps) {
   const count = slides.length;
 
+  // Refs hold live animation state without triggering React re-renders:
+  // frameRef = the viewport element, cardRefs = each card element,
+  // posRef = current scroll position (in card units), targetRef = where we are
+  // animating to, widthRef = measured card width, rafRef = animation handle,
+  // dragRef = in-progress pointer drag info.
   const frameRef = React.useRef<HTMLDivElement>(null);
   const cardRefs = React.useRef<(HTMLDivElement | null)[]>([]);
   const posRef = React.useRef(0);
@@ -67,13 +83,17 @@ export function CoverflowCarousel({
     t: number;
   } | null>(null);
 
+  // The index of the currently centered slide (drives caption/pagination).
   const [selected, setSelected] = React.useState(0);
 
+  // Convert a (possibly fractional/looped) position into a valid slide index.
   const indexAt = React.useCallback(
     (pos: number) => ((Math.round(pos) % count) + count) % count,
     [count],
   );
 
+  // Position every card for the current scroll position: horizontal offset,
+  // depth (translateZ), rotation (rotateY), opacity, and stacking order.
   const paint = React.useCallback(() => {
     const width = widthRef.current;
     if (!width) return;
@@ -103,6 +123,8 @@ export function CoverflowCarousel({
     });
   }, [count, depth, fade, falloff, gap, loop, rotate]);
 
+  // Smoothly animate the carousel to a target position using requestAnimationFrame,
+  // easing toward the target each frame until it is close enough.
   const settle = React.useCallback(
     (target: number) => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
@@ -126,11 +148,13 @@ export function CoverflowCarousel({
     [indexAt, paint],
   );
 
+  // Keep the position within bounds (no clamping when looping is enabled).
   const clamp = React.useCallback(
     (pos: number) => (loop ? pos : Math.max(0, Math.min(count - 1, pos))),
     [count, loop],
   );
 
+  // Animate to a specific slide index (choosing the shortest looped path).
   const goTo = React.useCallback(
     (index: number) => {
       const target = loop
@@ -141,11 +165,14 @@ export function CoverflowCarousel({
     [clamp, count, loop, settle],
   );
 
+  // Move by a whole number of slides (used by arrow keys and nav buttons).
   const nudge = React.useCallback(
     (by: number) => settle(clamp(Math.round(targetRef.current) + by)),
     [clamp, settle],
   );
 
+  // Pointer (mouse/touch) drag handlers: start tracking on down, move the
+  // carousel with the finger on move, and release with momentum on up.
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (rafRef.current !== null) {
       cancelAnimationFrame(rafRef.current);
@@ -188,6 +215,7 @@ export function CoverflowCarousel({
     settle(clamp(Math.round(posRef.current + carried)));
   };
 
+  // Measure the card width on mount and whenever the frame resizes, then repaint.
   useIsoLayoutEffect(() => {
     const frame = frameRef.current;
     if (!frame) return;
@@ -211,6 +239,15 @@ export function CoverflowCarousel({
     },
     [],
   );
+
+  // Auto-advance the carousel on a timer (paused while the user is dragging).
+  React.useEffect(() => {
+    if (!autoplay || count <= 1) return;
+    const id = setInterval(() => {
+      if (!dragRef.current) nudge(1);
+    }, autoplayDelay);
+    return () => clearInterval(id);
+  }, [autoplay, autoplayDelay, count, nudge]);
 
   const active = slides[selected];
 
@@ -271,6 +308,10 @@ export function CoverflowCarousel({
                   src={slide.src}
                   alt={slide.alt}
                   draggable={false}
+                  onError={(e) => {
+                    // Hide broken/missing images so the muted card shows instead of an icon.
+                    e.currentTarget.style.opacity = "0";
+                  }}
                   className="h-full w-full select-none object-cover"
                 />
               </div>

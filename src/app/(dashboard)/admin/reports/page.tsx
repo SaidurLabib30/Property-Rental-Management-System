@@ -1,9 +1,13 @@
 "use client";
 
+// Admin "Reports & Analytics" page.
+// Renders platform-wide charts via the reusable ChartCard. The datasets are
+// static demo values defined inside the component.
 import { ChartCard } from '@/components/dashboard/chart-card';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function AdminReportsPage() {
+  // New users per month (line/bar chart data).
   const userGrowth = [
     { name: 'Jan', value: 120 },
     { name: 'Feb', value: 180 },
@@ -13,6 +17,7 @@ export default function AdminReportsPage() {
     { name: 'Jun', value: 420 },
   ];
 
+  // Share of properties by type (pie chart data).
   const propertyStats = [
     { name: 'Apartment', value: 45 },
     { name: 'House', value: 30 },

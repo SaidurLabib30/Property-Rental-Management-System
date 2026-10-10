@@ -1,11 +1,15 @@
 "use client";
 
+// Tenant "Browse Properties" page.
+// Shows available rentals the tenant can apply to. Reads from mock data.
 import { mockApplications, mockProperties } from '@/data/mockData';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 export default function TenantPropertiesPage() {
+  // This tenant's existing applications (demo filter by a known tenant id).
   const applications = mockApplications.filter(a => a.tenantId === 'u2');
+  // Up to 4 available properties to show as browse options.
   const properties = mockProperties.filter(p => p.status === 'available').slice(0, 4);
 
   return (
@@ -24,7 +28,7 @@ export default function TenantPropertiesPage() {
                   <h3 className="font-semibold">{property.title}</h3>
                   <p className="text-sm text-muted-foreground">{property.city}, {property.state}</p>
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-primary">${property.price.toLocaleString()}/mo</span>
+                    <span className="font-bold text-primary">৳ {property.price.toLocaleString()}/mo</span>
                     <Button size="sm">Apply</Button>
                   </div>
                 </div>

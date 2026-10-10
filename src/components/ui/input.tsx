@@ -1,3 +1,6 @@
+// input.tsx
+// Styled text <input> wrapper used across forms. Accepts all native input
+// props plus a `className` override; applies consistent focus/invalid styles.
 import * as React from "react"
 
 import { cn } from "@/lib/utils"

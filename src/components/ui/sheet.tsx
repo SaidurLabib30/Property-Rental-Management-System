@@ -1,26 +1,36 @@
 "use client"
 
+// Sheet: a panel that slides in from a screen edge (a drawer-style dialog).
+// Wraps Radix UI's Dialog primitives, styled to slide from a chosen side.
+// Exports Sheet (root) plus Portal, Overlay, Trigger, Close, Content,
+// Header, Footer, Title, and Description parts.
+
 import * as React from "react"
 import * as SheetPrimitive from "@radix-ui/react-dialog"
 import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+// Root wrapper that controls whether the sheet is open or closed.
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />
 }
 
+// The element that opens the sheet when clicked.
 function SheetTrigger({ ...props }: React.ComponentProps<typeof SheetPrimitive.Trigger>) {
   return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />
 }
 
+// An element that closes the sheet when clicked.
 function SheetClose({ ...props }: React.ComponentProps<typeof SheetPrimitive.Close>) {
   return <SheetPrimitive.Close data-slot="sheet-close" {...props} />
 }
 
+// Renders the sheet's content outside the normal DOM tree (in a portal).
 function SheetPortal({ ...props }: React.ComponentProps<typeof SheetPrimitive.Portal>) {
   return <SheetPrimitive.Portal data-slot="sheet-portal" {...props} />
 }
 
+// The dark, semi-transparent backdrop shown behind the sheet.
 function SheetOverlay({ className, ...props }: React.ComponentProps<typeof SheetPrimitive.Overlay>) {
   return (
     <SheetPrimitive.Overlay
@@ -34,6 +44,7 @@ function SheetOverlay({ className, ...props }: React.ComponentProps<typeof Sheet
   )
 }
 
+// The sliding panel itself; "side" picks which edge it slides from. Includes a close (X) button.
 function SheetContent({ className, children, side = "right", ...props }: React.ComponentProps<typeof SheetPrimitive.Content> & { side?: "top" | "right" | "bottom" | "left" }) {
   return (
     <SheetPortal data-slot="sheet-portal">
@@ -64,6 +75,7 @@ function SheetContent({ className, children, side = "right", ...props }: React.C
   )
 }
 
+// Top area of the sheet, usually holding the title and description.
 function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -74,6 +86,7 @@ function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+// Bottom area of the sheet, usually holding action buttons.
 function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -84,6 +97,7 @@ function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+// The sheet's heading text.
 function SheetTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -94,6 +108,7 @@ function SheetTitle({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+// Secondary explanatory text shown under the title.
 function SheetDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div

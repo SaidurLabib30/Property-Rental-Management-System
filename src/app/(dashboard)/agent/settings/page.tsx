@@ -1,5 +1,8 @@
 "use client";
 
+// Agent "Settings" page.
+// A simple profile form (name/email/phone) for the agent account. Inputs use
+// placeholder defaultValues and the Save button is not wired to an action yet.
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';

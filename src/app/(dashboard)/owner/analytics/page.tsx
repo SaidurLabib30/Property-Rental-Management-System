@@ -1,8 +1,12 @@
 "use client";
 
+// Owner "Analytics" page.
+// Shows portfolio performance using the reusable ChartCard component.
+// The datasets below are static demo values that feed the charts.
 import { ChartCard } from '@/components/dashboard/chart-card';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
+// Monthly revenue figures (used by the bar and line charts).
 const revenueData = [
   { name: 'Jan', value: 24000 },
   { name: 'Feb', value: 22100 },
@@ -12,11 +16,13 @@ const revenueData = [
   { name: 'Jun', value: 28500 },
 ];
 
+// Occupied vs available split (used by the pie chart).
 const occupancyData = [
   { name: 'Occupied', value: 75 },
   { name: 'Available', value: 25 },
 ];
 
+// Count of properties grouped by type.
 const propertiesByType = [
   { name: 'Apartment', value: 5 },
   { name: 'House', value: 3 },

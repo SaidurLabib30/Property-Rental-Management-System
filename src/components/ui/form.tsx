@@ -1,5 +1,11 @@
 "use client"
 
+// Form UI primitives: lightweight styled building blocks for building forms.
+// Wraps a native <form> plus helper parts and uses Radix UI's Slot (for
+// FormControl) and the project's Label component. Exports Form (the <form>),
+// layout/content parts (FormItem, FormLabel, FormControl, FormDescription,
+// FormMessage, FormField), a useFormField hook, and the inputVariants styles.
+
 import * as React from "react"
 import * as LabelPrimitive from "@radix-ui/react-label"
 import * as SlotPrimitive from "@radix-ui/react-slot"
@@ -8,6 +14,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 import { Label } from "@/components/ui/label"
 
+// Reusable style variants for text inputs (size and visual variant options).
 const inputVariants = cva(
   "flex w-full rounded-md border bg-transparent shadow-xs transition-[color,box-shadow] outline-none",
   {
@@ -29,6 +36,7 @@ const inputVariants = cva(
   }
 )
 
+// Style variants controlling the form's layout (stacked "default" or "inline").
 const formVariants = cva("grid gap-2", {
   variants: {
     layout: {
@@ -41,11 +49,13 @@ const formVariants = cva("grid gap-2", {
   },
 })
 
+// Hook that generates a stable random id, useful for linking labels to fields.
 function useFormField() {
   const [id] = React.useState(() => Math.random().toString(36).slice(2, 9))
   return { id }
 }
 
+// The native <form> element, styled with the chosen `layout`.
 function Form({ className, layout, ...props }: React.ComponentProps<"form"> & VariantProps<typeof formVariants>) {
   return (
     <form
@@ -56,6 +66,7 @@ function Form({ className, layout, ...props }: React.ComponentProps<"form"> & Va
   )
 }
 
+// Wrapper that groups one field's label, control, and messages together.
 function FormItem({ className, ...props }: React.ComponentProps<"div">) {
   const id = React.useId()
   return (
@@ -67,6 +78,7 @@ function FormItem({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+// A field label (built on the shared Label); turns red when the field errors.
 function FormLabel({
   className,
   ...props
@@ -80,10 +92,12 @@ function FormLabel({
   )
 }
 
+// Uses Radix Slot to pass form-control props onto whatever input it wraps.
 function FormControl({ ...props }: React.ComponentProps<typeof SlotPrimitive.Slot>) {
   return <SlotPrimitive.Slot data-slot="form-control" {...props} />
 }
 
+// Muted helper text shown beneath a field to explain it.
 function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
   return (
     <p
@@ -94,6 +108,7 @@ function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
   )
 }
 
+// Red text used to show a field's validation/error message.
 function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
   return (
     <p
@@ -104,6 +119,7 @@ function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
   )
 }
 
+// A simple div wrapper for a single form field's elements.
 function FormField({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div

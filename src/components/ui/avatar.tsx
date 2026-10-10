@@ -1,10 +1,16 @@
 "use client"
 
+// Avatar UI primitive: a thin wrapper around Radix UI's Avatar.
+// Exports Avatar (the container), AvatarImage (the picture), and
+// AvatarFallback (shown when the image is missing or still loading).
+// Use these together to display a user's profile picture or initials.
+
 import * as React from "react"
 import * as AvatarPrimitive from "@radix-ui/react-avatar"
 
 import { cn } from "@/lib/utils"
 
+// The round container that holds the avatar image and fallback.
 function Avatar({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Root>) {
   return (
     <AvatarPrimitive.Root
@@ -18,6 +24,7 @@ function Avatar({ className, ...props }: React.ComponentProps<typeof AvatarPrimi
   )
 }
 
+// The actual profile picture rendered inside the avatar.
 function AvatarImage({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Image>) {
   return (
     <AvatarPrimitive.Image
@@ -28,6 +35,7 @@ function AvatarImage({ className, ...props }: React.ComponentProps<typeof Avatar
   )
 }
 
+// Placeholder (usually initials) shown when the image can't be displayed.
 function AvatarFallback({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Fallback>) {
   return (
     <AvatarPrimitive.Fallback

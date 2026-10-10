@@ -1,8 +1,12 @@
 "use client";
 
+// Admin "Overview" page.
+// The admin landing screen: top-level KPI cards, a user-role breakdown, and a
+// recent system-activity feed. All numbers here are static demo values.
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function AdminDashboard() {
+  // Static platform-wide statistics shown in the cards below.
   const stats = {
     totalUsers: 1247,
     owners: 342,
@@ -20,7 +24,7 @@ export default function AdminDashboard() {
           <p className="text-muted-foreground">System-wide statistics and management</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="stat-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card className="border-0 shadow-sm">
             <CardContent className="p-6">
               <div className="text-sm text-muted-foreground mb-1">Total Users</div>
@@ -77,6 +81,7 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
+                {/* Recent activity feed — placeholder entries rendered in a list */}
                 {[
                   { action: 'New property listed', user: 'John Smith', time: '2 min ago' },
                   { action: 'Application approved', user: 'Michael Brown', time: '15 min ago' },

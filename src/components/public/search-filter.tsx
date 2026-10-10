@@ -1,5 +1,9 @@
 "use client";
 
+// search-filter.tsx
+// Search bar + advanced filter panel used on the listings page. It keeps all
+// filter values in local state and reports them to the parent through the
+// optional onSearch / onFilterChange callbacks when the user submits.
 import { useState } from 'react';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -20,9 +24,12 @@ interface SearchFilterProps {
     maxPrice?: number;
     bedrooms?: number;
   }) => void;
+  // When false, hides the filter trigger buttons (used by the simple home hero search).
+  showFilters?: boolean;
 }
 
-export function SearchFilter({ onSearch, onFilterChange }: SearchFilterProps) {
+export function SearchFilter({ onSearch, onFilterChange, showFilters = true }: SearchFilterProps) {
+  // One piece of state per input in the search/filter form.
   const [query, setQuery] = useState('');
   const [location, setLocation] = useState('');
   const [type, setType] = useState<PropertyType | ''>('');
@@ -31,8 +38,11 @@ export function SearchFilter({ onSearch, onFilterChange }: SearchFilterProps) {
   const [maxPrice, setMaxPrice] = useState('');
   const [bedrooms, setBedrooms] = useState('');
 
+  // The list of filters that currently have a value — used to show a count badge.
   const activeFilters = [location, type, status, minPrice, maxPrice, bedrooms].filter(Boolean);
 
+  // On submit, send the search text and the chosen filters up to the parent.
+  // Empty strings are converted to `undefined` so they are treated as "no filter".
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     onSearch?.(query);
@@ -46,6 +56,7 @@ export function SearchFilter({ onSearch, onFilterChange }: SearchFilterProps) {
     });
   };
 
+  // Reset every field and tell the parent that all filters are cleared.
   const clearFilters = () => {
     setQuery('');
     setLocation('');
@@ -58,6 +69,8 @@ export function SearchFilter({ onSearch, onFilterChange }: SearchFilterProps) {
     onFilterChange?.({});
   };
 
+  // The filter fields, extracted into a small component so they can be reused
+  // inside both the desktop (right) and mobile (bottom) slide-out sheets.
   const FilterContent = () => (
     <div className="space-y-4">
       <div>
@@ -103,11 +116,11 @@ export function SearchFilter({ onSearch, onFilterChange }: SearchFilterProps) {
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="text-sm font-medium mb-1.5 block">Min Price</label>
-          <Input type="number" placeholder="$0" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
+          <Input type="number" placeholder="৳ 0" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
         </div>
         <div>
           <label className="text-sm font-medium mb-1.5 block">Max Price</label>
-          <Input type="number" placeholder="$10000" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
+          <Input type="number" placeholder="৳ 10000" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
         </div>
       </div>
       <div>
@@ -147,6 +160,7 @@ export function SearchFilter({ onSearch, onFilterChange }: SearchFilterProps) {
             className="pl-9 h-11"
           />
         </div>
+        {showFilters && (
         <div className="hidden md:block">
           <Sheet>
             <SheetTrigger asChild>
@@ -169,9 +183,11 @@ export function SearchFilter({ onSearch, onFilterChange }: SearchFilterProps) {
             </SheetContent>
           </Sheet>
         </div>
+        )}
         <Button type="submit" size="default" className="h-11">Search</Button>
       </div>
 
+      {showFilters && (
       <div className="md:hidden">
         <Sheet>
           <SheetTrigger asChild>
@@ -190,13 +206,15 @@ export function SearchFilter({ onSearch, onFilterChange }: SearchFilterProps) {
           </SheetContent>
         </Sheet>
       </div>
+      )}
 
+      {/* Active-filter chips summarizing the current selection */}
       {activeFilters.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {location && <Badge variant="secondary">{location}</Badge>}
           {type && <Badge variant="secondary">{type}</Badge>}
           {status && <Badge variant="secondary">{status}</Badge>}
-          {(minPrice || maxPrice) && <Badge variant="secondary">${minPrice || '0'} - ${maxPrice || 'Any'}</Badge>}
+          {(minPrice || maxPrice) && <Badge variant="secondary">৳ {minPrice || '0'} - ৳ {maxPrice || 'Any'}</Badge>}
           {bedrooms && <Badge variant="secondary">{bedrooms}+ beds</Badge>}
         </div>
       )}

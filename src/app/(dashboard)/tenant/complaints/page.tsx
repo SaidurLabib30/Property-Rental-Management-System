@@ -1,5 +1,8 @@
 "use client";
 
+// Tenant "Support & Complaints" page.
+// Two columns: a form to submit a new complaint (not wired to a backend yet)
+// and a list of the tenant's existing complaints. Reads from mock data.
 import { mockComplaints } from '@/data/mockData';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 export default function TenantComplaintsPage() {
+  // This tenant's complaints (demo filter by a known user id).
   const complaints = mockComplaints.filter(c => c.userId === 'u2');
 
   return (

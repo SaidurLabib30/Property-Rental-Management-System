@@ -1,5 +1,9 @@
 "use client";
 
+// Owner "Tenants" page.
+// Shows summary cards and a list of the owner's current tenants,
+// derived from approved rental applications in the mock data.
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +11,7 @@ import { StatusBadge } from '@/components/dashboard/status-badge';
 import { mockApplications } from '@/data/mockData';
 
 export default function OwnerTenantsPage() {
+  // Current tenants are approximated from applications that were approved.
   const tenants = mockApplications.filter(a => a.status === 'approved');
 
   return (
@@ -16,7 +21,7 @@ export default function OwnerTenantsPage() {
         <p className="text-muted-foreground">Manage your current tenants</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="stat-grid grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="border-0 shadow-sm">
           <CardContent className="p-6">
             <div className="text-sm text-muted-foreground mb-1">Total Tenants</div>
@@ -46,6 +51,7 @@ export default function OwnerTenantsPage() {
             {tenants.map(tenant => (
                <div key={tenant.id} className="flex items-center justify-between p-4 bg-muted rounded-lg">
                 <div className="flex items-center gap-3">
+                  {/* Demo-only: map known tenant ids to initials/names (placeholder data) */}
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
                     {tenant.tenantId === 'u2' ? 'SJ' : 'JL'}
                   </div>

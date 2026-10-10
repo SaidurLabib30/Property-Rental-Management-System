@@ -1,5 +1,8 @@
 "use client";
 
+// Agent "Property Listings" page. Shows the agent's properties as a grid of
+// cards, with an "Add Property" button in the header. Uses local mock data.
+
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,6 +11,8 @@ import { StatusBadge } from '@/components/dashboard/status-badge';
 import { mockProperties } from '@/data/mockData';
 
 export default function AgentPropertiesPage() {
+  // Pick the properties to show. The `|| true` means the filter currently keeps
+  // every property, and we then take the first 5 for display.
   const properties = mockProperties.filter(p => p.agentId || true).slice(0, 5);
 
   return (
@@ -30,7 +35,7 @@ export default function AgentPropertiesPage() {
                 <h3 className="font-semibold">{property.title}</h3>
                 <p className="text-sm text-muted-foreground">{property.address}, {property.city}</p>
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-primary">${property.price.toLocaleString()}/mo</span>
+                  <span className="font-bold text-primary">৳ {property.price.toLocaleString()}/mo</span>
                   <StatusBadge variant={property.status === 'available' ? 'success' : 'secondary'}>{property.status}</StatusBadge>
                 </div>
               </CardContent>

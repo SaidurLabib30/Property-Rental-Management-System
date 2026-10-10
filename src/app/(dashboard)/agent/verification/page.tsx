@@ -1,10 +1,15 @@
 "use client";
 
+// Agent "Property Verification" page.
+// Lets an agent review listings awaiting verification. Shows a count of
+// pending vs verified and a list of pending properties with Verify/Reject
+// buttons (not wired yet). Reads from mock data.
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { mockProperties } from '@/data/mockData';
 
 export default function AgentVerificationPage() {
+  // Properties still waiting for verification (limited to the first 3 for demo).
   const pending = mockProperties.filter(p => p.status === 'pending').slice(0, 3);
 
   return (
@@ -14,7 +19,7 @@ export default function AgentVerificationPage() {
           <p className="text-muted-foreground">Review and verify property listings</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="stat-grid grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Card className="border-0 shadow-sm">
             <CardContent className="p-6">
               <div className="text-sm text-muted-foreground mb-1">Pending Verification</div>

@@ -1,16 +1,22 @@
 "use client";
 
+// About page for the public site. A static, informational page describing the
+// company's mission, headline stats, and core values. There is no data
+// fetching here; everything shown is hard-coded in this file.
 import { useState } from 'react';
 import { Home, Users, Building2, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 export default function AboutPage() {
+  // Tracks which tab ('mission', 'team', or 'values') is selected. Note: this
+  // state is declared but is not actually read by the markup below yet.
   const [activeTab, setActiveTab] = useState<'mission' | 'team' | 'values'>('mission');
 
   return (
     <div className="flex flex-col">
-      <section className="bg-slate-900 text-white py-16">
+      {/* Hero banner with the page heading and intro text. */}
+      <section className="bg-primary text-primary-foreground py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl font-bold mb-4">About PropEase</h1>
           <p className="text-slate-300 max-w-2xl mx-auto text-lg">
@@ -19,6 +25,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Mission section: descriptive text beside a 2x2 grid of stat cards. */}
       <section className="py-16 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -51,6 +58,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Values section: three cards built by mapping over a list of values. */}
       <section className="py-16 bg-muted">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">

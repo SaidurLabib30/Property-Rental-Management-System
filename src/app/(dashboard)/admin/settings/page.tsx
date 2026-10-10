@@ -1,5 +1,8 @@
 "use client";
 
+// Admin "Settings" page.
+// Two sections: a moderation list of banned users (with an Unban button) and a
+// basic system-configuration form. Reads banned users from mock data.
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -8,6 +11,7 @@ import { mockUsers } from '@/data/mockData';
 import { StatusBadge } from '@/components/dashboard/status-badge';
 
 export default function AdminSettingsPage() {
+  // Only users whose `banned` flag is true appear in the moderation list.
   const bannedUsers = mockUsers.filter(u => u.banned);
 
   return (
@@ -22,6 +26,7 @@ export default function AdminSettingsPage() {
             <CardTitle>Banned Users</CardTitle>
           </CardHeader>
           <CardContent>
+            {/* Show a friendly message when nobody is banned, otherwise list them */}
             {bannedUsers.length === 0 ? (
               <p className="text-sm text-muted-foreground">No banned users.</p>
             ) : (

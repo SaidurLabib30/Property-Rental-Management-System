@@ -1,5 +1,8 @@
 "use client";
 
+// Agent "Rental Agreements" page.
+// Lists active lease agreements the agent manages, showing the property,
+// tenant, dates, and monthly rent. Reads from mock data.
 import { mockAgreements } from '@/data/mockData';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,12 +22,13 @@ export default function AgentAgreementsPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
+              {/* One row per agreement in the demo data */}
               {mockAgreements.map(agreement => (
                  <div key={agreement.id} className="flex items-center justify-between p-4 bg-muted rounded-lg">
                   <div>
                     <div className="font-medium">Property {agreement.propertyId} - Tenant {agreement.tenantId}</div>
                     <div className="text-sm text-muted-foreground">{agreement.startDate} to {agreement.endDate}</div>
-                    <div className="text-sm font-medium text-primary">${agreement.monthlyRent.toLocaleString()}/mo</div>
+                    <div className="text-sm font-medium text-primary">৳ {agreement.monthlyRent.toLocaleString()}/mo</div>
                   </div>
                   <StatusBadge variant="success">{agreement.status}</StatusBadge>
                 </div>

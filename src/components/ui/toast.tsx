@@ -1,5 +1,11 @@
 "use client"
 
+// toast.tsx
+// Toast notification primitives built on Radix UI (pop-up messages shown
+// briefly in a corner). Exports the Provider, Viewport (where toasts stack),
+// the Toast root with color variants (default/destructive/success), plus
+// Title, Description, Action, and Close pieces. `Toaster` is re-exported as
+// the provider for convenient mounting at the app root.
 import * as React from "react"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 import { cva, type VariantProps } from "class-variance-authority"

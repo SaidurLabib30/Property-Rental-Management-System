@@ -1,7 +1,13 @@
+// Card UI primitive: a set of simple styled <div> building blocks (no
+// external UI library) for grouping related content in a bordered box.
+// Exports Card plus its parts: CardHeader, CardTitle, CardDescription,
+// CardAction, CardContent, and CardFooter. Compose them to build a card.
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+// The outer card container that wraps all the other card parts.
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -15,6 +21,7 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+// Top section of the card, typically holding the title and description.
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -25,6 +32,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+// The card's main heading text.
 function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -35,6 +43,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+// Smaller, muted supporting text shown under the title.
 function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -45,6 +54,7 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+// Area in the header for an action (e.g. a button) aligned to the side.
 function CardAction({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -55,6 +65,7 @@ function CardAction({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+// The main body of the card where the primary content goes.
 function CardContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -65,6 +76,7 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+// Bottom section of the card, often holding actions or footer text.
 function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div

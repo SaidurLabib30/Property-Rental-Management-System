@@ -1,5 +1,8 @@
+// Skeleton: a grey, pulsing placeholder shown while content loads.
+// A styled <div> with a pulse animation (no external primitive). Exports Skeleton.
 import { cn } from "@/lib/utils"
 
+// Renders the animated placeholder box; its size/shape come from className.
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div

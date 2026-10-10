@@ -1,18 +1,26 @@
+// Owner dashboard "Overview" page.
+// Shows a welcome header, a featured-properties carousel (WorksWheelDemo),
+// summary stat cards, and lists of recent payments and the owner's properties.
+// The numbers and lists here are hard-coded sample data, not live data yet.
 import WorksWheelDemo from '@/components/ui/works-wheel-demo';
 
+// The default export is the page component Next.js renders for this route.
 export default function OwnerDashboard() {
   return (
     <div className="space-y-6">
+      {/* Page title and welcome message */}
         <div>
           <h1 className="text-3xl font-bold">Overview</h1>
           <p className="text-muted-foreground">Welcome back! Here is what is happening with your properties.</p>
         </div>
 
+        {/* Featured properties section: a search box plus a draggable carousel */}
         <div className="bg-card rounded-xl border p-6 shadow-sm">
           <h3 className="font-semibold mb-4 text-center">Featured Properties</h3>
           <p className="text-sm text-muted-foreground text-center mb-4">Scroll or drag to browse</p>
           <div className="flex justify-center mb-4">
             <div className="relative w-full max-w-md">
+              {/* Search field (visual only for now; it has no onChange handler) */}
               <input
                 type="text"
                 placeholder="Search properties..."
@@ -23,12 +31,14 @@ export default function OwnerDashboard() {
               </svg>
             </div>
           </div>
+          {/* The interactive carousel component showing featured properties */}
           <div className="h-[400px]">
             <WorksWheelDemo />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Row of four summary stat cards (values are static sample numbers) */}
+        <div className="stat-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-card rounded-xl border p-6 shadow-sm">
             <div className="text-sm font-medium text-muted-foreground mb-1">Total Properties</div>
             <div className="text-3xl font-bold">12</div>
@@ -46,15 +56,17 @@ export default function OwnerDashboard() {
           </div>
           <div className="bg-card rounded-xl border p-6 shadow-sm">
             <div className="text-sm font-medium text-muted-foreground mb-1">Monthly Collection</div>
-            <div className="text-3xl font-bold">$28,500</div>
+            <div className="text-3xl font-bold">৳ 28,500</div>
             <div className="text-xs text-green-600 mt-1">+5.2% from last month</div>
           </div>
         </div>
 
+        {/* Two side-by-side panels: recent payments and the owner's properties */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="bg-card rounded-xl border p-6 shadow-sm">
             <h3 className="font-semibold mb-4">Recent Payments</h3>
             <div className="space-y-4">
+              {/* Loop over the sample payment records and render a row for each */}
               {[
                 { tenant: 'Sarah Johnson', property: 'Luxury Downtown Apt', amount: 3500, date: '2024-05-01', status: 'paid' },
                 { tenant: 'Jessica Lee', property: 'Cozy Studio', amount: 1800, date: '2024-05-05', status: 'paid' },
@@ -66,7 +78,7 @@ export default function OwnerDashboard() {
                     <div className="text-xs text-muted-foreground">{payment.property}</div>
                   </div>
                   <div className="text-right">
-                    <div className="font-medium text-sm">${payment.amount.toLocaleString()}</div>
+                    <div className="font-medium text-sm">৳ {payment.amount.toLocaleString()}</div>
                     <div className="text-xs text-muted-foreground capitalize">{payment.status}</div>
                   </div>
                 </div>
@@ -77,6 +89,8 @@ export default function OwnerDashboard() {
           <div className="bg-card rounded-xl border p-6 shadow-sm">
             <h3 className="font-semibold mb-4">My Properties</h3>
             <div className="space-y-3">
+              {/* Loop over the sample properties and render a row for each.
+                  "available" status gets a green badge, otherwise a muted badge. */}
               {[
                 { title: 'Luxury Downtown Apartment', status: 'rented', price: 3500 },
                 { title: 'Cozy Studio in Brooklyn', status: 'rented', price: 1800 },
@@ -85,7 +99,7 @@ export default function OwnerDashboard() {
                 <div key={i} className="flex items-center justify-between p-3 bg-muted rounded-lg">
                   <div>
                     <div className="font-medium text-sm">{property.title}</div>
-                    <div className="text-xs text-muted-foreground">${property.price.toLocaleString()}/mo</div>
+                    <div className="text-xs text-muted-foreground">৳ {property.price.toLocaleString()}/mo</div>
                   </div>
                   <span className={`text-xs px-2 py-1 rounded-full ${property.status === 'available' ? 'bg-green-100 text-green-700' : 'bg-muted text-foreground'}`}>
                     {property.status}

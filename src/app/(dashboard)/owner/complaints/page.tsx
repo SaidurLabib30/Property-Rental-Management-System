@@ -1,5 +1,9 @@
 "use client";
 
+// Owner "Complaints" page.
+// Shows summary counts (open / in progress / resolved) and a list of
+// complaints related to this owner, each with a quick reply box. Data comes
+// from mock data for now.
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +14,7 @@ import { Label } from '@/components/ui/label';
 import { mockComplaints } from '@/data/mockData';
 
 export default function OwnerComplaintsPage() {
+  // Complaints visible to this owner (demo filter by known user ids).
   const [complaints] = useState(mockComplaints.filter(c => c.userId === 'u1' || c.userId === 'u2'));
 
   return (
@@ -19,7 +24,7 @@ export default function OwnerComplaintsPage() {
         <p className="text-muted-foreground">Manage and resolve tenant complaints</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="stat-grid grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="border-0 shadow-sm">
           <CardContent className="p-6">
             <div className="text-sm text-muted-foreground mb-1">Open</div>

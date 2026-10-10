@@ -1,5 +1,9 @@
+// Separator: a thin line that visually divides content.
+// A styled <div> with role="separator" (not a Radix primitive here).
+// Supports horizontal (default) or vertical orientation. Exports Separator.
 import { cn } from "@/lib/utils"
 
+// Renders the divider; orientation controls whether it is a row or column line.
 function Separator({ className, orientation = "horizontal", ...props }: React.ComponentProps<"div"> & { orientation?: "horizontal" | "vertical" }) {
   return (
     <div

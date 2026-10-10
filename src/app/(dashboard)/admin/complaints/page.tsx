@@ -1,11 +1,15 @@
 "use client";
 
+// Admin "Fraud & Complaints" page.
+// Shows platform complaints with status summary counts and a full list, each
+// with a Resolve button. Reads from mock data.
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { mockComplaints } from '@/data/mockData';
 import { StatusBadge } from '@/components/dashboard/status-badge';
 
 export default function AdminComplaintsPage() {
+  // All complaints (demo data); the cards below count them by status.
   const complaints = mockComplaints;
 
   return (
@@ -15,7 +19,7 @@ export default function AdminComplaintsPage() {
           <p className="text-muted-foreground">Manage platform complaints and fraud reports</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="stat-grid grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Card className="border-0 shadow-sm">
             <CardContent className="p-6">
               <div className="text-sm text-muted-foreground mb-1">Open</div>

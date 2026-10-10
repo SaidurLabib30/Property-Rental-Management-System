@@ -1,5 +1,8 @@
 "use client"
 
+// radio-group.tsx
+// Radio button group built on Radix UI. RadioGroup is the container that tracks
+// the selected value; RadioGroupItem is a single selectable circle option.
 import * as React from "react"
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
 import { Circle } from "lucide-react"

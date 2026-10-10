@@ -1,21 +1,43 @@
 "use client";
 
-import { useState } from 'react';
+// Property details page for a single listing. This is a dynamic route: the
+// [id] in the URL (e.g. /listings/5) picks which property to show. It finds
+// that property in the mock data, then shows a photo, key facts, tabbed
+// details, an owner/contact sidebar, and similar properties in the same city.
+// If no property matches the id, a "Property Not Found" message is shown.
+import { useState, use, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
-import { Home as HomeIcon, MapPin, BedDouble, Bath, Square, Calendar, Heart, Share2, Phone, Mail } from 'lucide-react';
+import { Home as HomeIcon, MapPin, BedDouble, Bath, Square, Heart, Share2, Phone, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PropertyCard } from '@/components/public/property-card';
 import { mockProperties } from '@/data/mockData';
+import { formatBDT } from '@/lib/currency';
 
-export default function PropertyDetailsPage({ params }: { params: { id: string } }) {
-  const property = mockProperties.find(p => p.id === params.id);
+export default function PropertyDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  // Reading async route params must happen inside a Suspense boundary so the
+  // route can still be prerendered; the id streams in at request time.
+  return (
+    <Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-16 text-center text-muted-foreground">Loading property…</div>}>
+      <PropertyDetails params={params} />
+    </Suspense>
+  );
+}
+
+function PropertyDetails({ params }: { params: Promise<{ id: string }> }) {
+  // In Next.js 16, route params are async — unwrap the Promise with React.use()
+  // so we read the real id from the URL (this was the bug: `params.id` was
+  // undefined, so no property ever matched and the page said "not found").
+  const { id } = use(params);
+  // Look up the property whose id matches the id taken from the URL.
+  const property = mockProperties.find(p => p.id === id);
+  // Whether the visitor marked this property as a favorite (local only).
   const [favorite, setFavorite] = useState(false);
 
+  // If no property matches the id, show a friendly "not found" screen instead.
   if (!property) {
     return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 text-center">
@@ -28,10 +50,12 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
     );
   }
 
+  // Up to 3 other properties in the same city, used in the "Similar" section.
   const similarProperties = mockProperties.filter(p => p.id !== property.id && p.city === property.city).slice(0, 3);
 
   return (
     <div className="flex flex-col">
+      {/* Breadcrumb trail: Home / Properties / this property's title. */}
       <div className="bg-muted border-b">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -45,10 +69,22 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 w-full">
+        {/* Clear way back to the full listings page. */}
+        <Link href="/listings" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
+          ← Back to Listings
+        </Link>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
+            {/* Main photo with status/featured badges and favorite/share buttons. */}
             <div className="relative aspect-video rounded-xl overflow-hidden bg-muted">
-              <Image src={property.images[0]} alt={property.title} fill className="object-cover" />
+              {property.images[0] ? (
+                <Image src={property.images[0]} alt={property.title} fill className="object-cover" />
+              ) : (
+                // Fallback when the property has no image.
+                <div className="flex h-full w-full items-center justify-center text-muted-foreground">
+                  <HomeIcon className="h-12 w-12" />
+                </div>
+              )}
               <div className="absolute top-4 left-4 flex gap-2">
                 <Badge variant={property.status === 'available' ? 'success' : 'secondary'}>
                   {property.status}
@@ -56,6 +92,7 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
                 {property.featured && <Badge variant="warning">Featured</Badge>}
               </div>
               <div className="absolute top-4 right-4 flex gap-2">
+                {/* Toggle the favorite state; a filled red heart means favorited. */}
                 <Button size="icon" variant="secondary" className="rounded-full" onClick={() => setFavorite(!favorite)}>
                   <Heart className={`h-4 w-4 ${favorite ? 'fill-red-500 text-red-500' : ''}`} />
                 </Button>
@@ -64,6 +101,17 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
                 </Button>
               </div>
             </div>
+
+            {/* Thumbnail gallery — only shown when the property has more than one image. */}
+            {property.images.length > 1 && (
+              <div className="grid grid-cols-4 gap-3">
+                {property.images.map((img, i) => (
+                  <div key={i} className="relative aspect-video rounded-lg overflow-hidden bg-muted">
+                    <Image src={img} alt={`${property.title} photo ${i + 1}`} fill className="object-cover" />
+                  </div>
+                ))}
+              </div>
+            )}
 
             <div>
               <div className="flex items-start justify-between">
@@ -75,12 +123,13 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl font-bold text-primary">${property.price.toLocaleString()}</div>
+                  <div className="text-3xl font-bold text-primary">{formatBDT(property.price)}</div>
                   <div className="text-sm text-muted-foreground">per month</div>
                 </div>
               </div>
             </div>
 
+            {/* Quick facts: bedrooms, bathrooms, area, and property type. */}
             <div className="grid grid-cols-4 gap-4">
               {[
                 { label: 'Bedrooms', value: property.bedrooms, icon: BedDouble },
@@ -100,6 +149,7 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
               ))}
             </div>
 
+            {/* Tabbed details: description, amenities list, and a map placeholder. */}
             <Tabs defaultValue="description" className="w-full">
               <TabsList className="w-full justify-start">
                 <TabsTrigger value="description">Description</TabsTrigger>
@@ -107,17 +157,21 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
                 <TabsTrigger value="location">Location</TabsTrigger>
               </TabsList>
               <TabsContent value="description" className="mt-4">
-                <p className="text-muted-foreground leading-relaxed">{property.description}</p>
+                <p className="text-muted-foreground leading-relaxed">{property.description || 'No description provided for this property.'}</p>
               </TabsContent>
               <TabsContent value="amenities" className="mt-4">
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {property.amenities.map((amenity, i) => (
-                    <div key={i} className="flex items-center gap-2 text-sm">
-                      <div className="h-2 w-2 rounded-full bg-primary" />
-                      {amenity}
-                    </div>
-                  ))}
-                </div>
+                {property.amenities.length > 0 ? (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {property.amenities.map((amenity, i) => (
+                      <div key={i} className="flex items-center gap-2 text-sm">
+                        <div className="h-2 w-2 rounded-full bg-primary" />
+                        {amenity}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">No amenities listed for this property.</p>
+                )}
               </TabsContent>
               <TabsContent value="location" className="mt-4">
                 <div className="aspect-video bg-muted rounded-lg flex items-center justify-center text-muted-foreground">
@@ -127,12 +181,13 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
             </Tabs>
           </div>
 
+          {/* Sidebar: price, apply/contact actions, and basic owner info. */}
           <div className="space-y-6">
             <Card className="border-0 shadow-md">
               <CardContent className="p-6 space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-2xl font-bold">${property.price.toLocaleString()}<span className="text-sm font-normal text-muted-foreground">/mo</span></div>
+                    <div className="text-2xl font-bold">{formatBDT(property.price)}<span className="text-sm font-normal text-muted-foreground">/mo</span></div>
                   </div>
                   <Badge variant={property.status === 'available' ? 'success' : 'secondary'}>
                     {property.status}
@@ -160,6 +215,7 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
               <CardContent className="p-6">
                 <h3 className="font-semibold mb-3">Property Owner</h3>
                 <div className="flex items-center gap-3">
+                  {/* Owner avatar initials and name are chosen from the owner id. */}
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
                     {property.ownerId === 'u1' ? 'JS' : 'DW'}
                   </div>
@@ -173,6 +229,7 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
           </div>
         </div>
 
+        {/* Only render the "Similar Properties" block if any were found. */}
         {similarProperties.length > 0 && (
           <div className="mt-16">
             <h2 className="text-2xl font-bold mb-6">Similar Properties</h2>

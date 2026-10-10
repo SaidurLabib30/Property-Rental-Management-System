@@ -1,10 +1,15 @@
 "use client"
 
+// Tabs: switch between panels of content using a row of tab buttons.
+// Wraps Radix UI's Tabs primitives with app styling (shadcn/ui style).
+// Exports Tabs (root), TabsList, TabsTrigger, and TabsContent.
+
 import * as React from "react"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
 
 import { cn } from "@/lib/utils"
 
+// Root wrapper that tracks which tab is currently active.
 function Tabs({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Root>) {
   return (
     <TabsPrimitive.Root
@@ -15,6 +20,7 @@ function Tabs({ className, ...props }: React.ComponentProps<typeof TabsPrimitive
   )
 }
 
+// The container holding the row of tab buttons.
 function TabsList({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.List>) {
   return (
     <TabsPrimitive.List
@@ -28,6 +34,7 @@ function TabsList({ className, ...props }: React.ComponentProps<typeof TabsPrimi
   )
 }
 
+// A single clickable tab button that selects its panel.
 function TabsTrigger({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
   return (
     <TabsPrimitive.Trigger
@@ -41,6 +48,7 @@ function TabsTrigger({ className, ...props }: React.ComponentProps<typeof TabsPr
   )
 }
 
+// The content panel shown for the currently active tab.
 function TabsContent({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Content>) {
   return (
     <TabsPrimitive.Content

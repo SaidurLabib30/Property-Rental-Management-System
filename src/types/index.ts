@@ -1,3 +1,9 @@
+// types/index.ts
+// Central TypeScript types shared across the whole app. These describe the
+// shape of the main domain objects (users, properties, applications, payments,
+// complaints, agreements) and the small string unions used for their statuses.
+// Keeping them in one place keeps the UI, mock data, and API responses in sync.
+
 // User roles in the system
 export type UserRole = 'owner' | 'tenant' | 'agent' | 'admin';
 

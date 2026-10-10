@@ -1,27 +1,38 @@
 "use client"
 
+// Dialog UI primitive: a styled wrapper around Radix UI's Dialog (a modal
+// popup). Exports the full set of parts: Dialog (root), DialogTrigger (opens
+// it), DialogPortal, DialogOverlay (dimmed background), DialogClose,
+// DialogContent (the box, with a built-in close button), and the layout
+// helpers DialogHeader, DialogFooter, DialogTitle, DialogDescription.
+
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+// Root component that controls whether the dialog is open or closed.
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />
 }
 
+// The element the user clicks to open the dialog.
 function DialogTrigger({ ...props }: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />
 }
 
+// Renders the dialog into a portal (outside the normal DOM flow).
 function DialogPortal({ ...props }: React.ComponentProps<typeof DialogPrimitive.Portal>) {
   return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />
 }
 
+// An element that closes the dialog when activated.
 function DialogClose({ ...props }: React.ComponentProps<typeof DialogPrimitive.Close>) {
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />
 }
 
+// The dimmed, full-screen background shown behind the dialog.
 function DialogOverlay({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
   return (
     <DialogPrimitive.Overlay
@@ -35,6 +46,7 @@ function DialogOverlay({ className, ...props }: React.ComponentProps<typeof Dial
   )
 }
 
+// The dialog box itself; renders the overlay plus content and a close (X) button.
 function DialogContent({ className, children, ...props }: React.ComponentProps<typeof DialogPrimitive.Content>) {
   return (
     <DialogPortal data-slot="dialog-portal">
@@ -57,6 +69,7 @@ function DialogContent({ className, children, ...props }: React.ComponentProps<t
   )
 }
 
+// Layout wrapper for the top of the dialog (title and description).
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -67,6 +80,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+// Layout wrapper for the bottom of the dialog, usually holding action buttons.
 function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -77,6 +91,7 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+// The dialog's main heading text.
 function DialogTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -87,6 +102,7 @@ function DialogTitle({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+// Smaller muted text that explains the dialog's purpose.
 function DialogDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div

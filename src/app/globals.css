@@ -1,9 +1,18 @@
+/* globals.css
+   Global stylesheet loaded once in the root layout. It pulls in Tailwind and
+   plugins, defines the design tokens (colors, fonts, radii) as CSS variables,
+   and sets base element styles. Light theme lives in :root, dark theme in .dark. */
+
+/* Tailwind core + animation and shadcn preset layers */
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* Enables `dark:` variants when a parent has the `.dark` class */
 @custom-variant dark (&:is(.dark *));
 
+/* Maps Tailwind color/font/radius utilities to the CSS variables below,
+   so classes like `bg-primary` read from `--primary`. */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -35,6 +44,8 @@
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
@@ -48,75 +59,84 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* Light theme: premium colorful real-estate palette (navy + blue + amber,
+   soft blue-gray page background, pastel cards via the .tone-* classes below) */
 :root {
-  --background: oklch(0.98 0.005 85);
-  --foreground: oklch(0.18 0.02 260);
-  --card: oklch(0.98 0.012 85);
-  --card-foreground: oklch(0.18 0.02 260);
-  --popover: oklch(0.99 0.008 85);
-  --popover-foreground: oklch(0.18 0.02 260);
-  --primary: oklch(0.9 0.08 85);
-  --primary-foreground: oklch(0 0 0);
-  --secondary: oklch(0.85 0.1 85);
-  --secondary-foreground: oklch(0 0 0);
-  --muted: oklch(0.96 0.01 250);
-  --muted-foreground: oklch(0.45 0.02 250);
-  --accent: oklch(0.55 0.1 170);
-  --accent-foreground: oklch(0.98 0 0);
-  --destructive: oklch(0.6 0.2 25);
-  --border: oklch(0.92 0.02 85);
-  --input: oklch(0.94 0.015 85);
-  --ring: oklch(0.85 0.08 85);
-  --chart-1: oklch(0.25 0.08 250);
-  --chart-2: oklch(0.55 0.12 170);
-  --chart-3: oklch(0.7 0.15 85);
-  --chart-4: oklch(0.6 0.2 25);
-  --chart-5: oklch(0.5 0.1 300);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.15 0.06 250);
-  --sidebar-foreground: oklch(0.98 0 0);
-  --sidebar-primary: oklch(0.9 0.08 85);
-  --sidebar-primary-foreground: oklch(0 0 0);
-  --sidebar-accent: oklch(0.2 0.05 250);
-  --sidebar-accent-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.25 0.04 250);
-  --sidebar-ring: oklch(0.7 0.1 250);
+  --background: #EDF4FC;
+  --foreground: #102E50;
+  --card: #FFFFFF;
+  --card-foreground: #102E50;
+  --popover: #FFFFFF;
+  --popover-foreground: #102E50;
+  --primary: #123B66;
+  --primary-foreground: #FFFFFF;
+  --secondary: #DCE9F8;
+  --secondary-foreground: #102E50;
+  --muted: #DCE9F8;
+  --muted-foreground: #526780;
+  --accent: #D9E9FF;
+  --accent-foreground: #102E50;
+  --destructive: #DC2626;
+  --border: #CAD9EC;
+  --input: #CAD9EC;
+  --ring: #1557A6;
+  --gold: #FFB52E;
+  --gold-foreground: #102E50;
+  --chart-1: #123B66;
+  --chart-2: #1557A6;
+  --chart-3: #FFB52E;
+  --chart-4: #16A34A;
+  --chart-5: #526780;
+  --radius: 0.75rem;
+  --sidebar: #082747;
+  --sidebar-foreground: #CBD9EC;
+  --sidebar-primary: #FFB52E;
+  --sidebar-primary-foreground: #082747;
+  --sidebar-accent: #1557A6;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #103A5E;
+  --sidebar-ring: #1557A6;
 }
 
+/* Dark theme: coherent dark variant of the same navy/blue/amber palette */
 .dark {
-  --background: oklch(0.18 0.02 260);
-  --foreground: oklch(0.95 0.01 250);
-  --card: oklch(0.22 0.03 260);
-  --card-foreground: oklch(0.95 0.01 250);
-  --popover: oklch(0.22 0.03 260);
-  --popover-foreground: oklch(0.95 0.01 250);
-  --primary: oklch(0.85 0.08 85);
-  --primary-foreground: oklch(0.15 0.04 260);
-  --secondary: oklch(0.75 0.08 85);
-  --secondary-foreground: oklch(0.15 0.04 260);
-  --muted: oklch(0.28 0.02 260);
-  --muted-foreground: oklch(0.75 0.02 250);
-  --accent: oklch(0.28 0.02 260);
-  --accent-foreground: oklch(0.95 0.01 250);
-  --destructive: oklch(0.65 0.2 25);
-  --border: oklch(0.35 0.02 260);
-  --input: oklch(0.35 0.02 260);
-  --ring: oklch(0.65 0.08 85);
-  --chart-1: oklch(0.65 0.12 250);
-  --chart-2: oklch(0.5 0.1 170);
-  --chart-3: oklch(0.75 0.15 85);
-  --chart-4: oklch(0.65 0.2 25);
-  --chart-5: oklch(0.55 0.1 300);
-  --sidebar: oklch(0.15 0.05 260);
-  --sidebar-foreground: oklch(0.95 0.01 250);
-  --sidebar-primary: oklch(0.65 0.08 85);
-  --sidebar-primary-foreground: oklch(0.15 0.04 260);
-  --sidebar-accent: oklch(0.22 0.04 260);
-  --sidebar-accent-foreground: oklch(0.95 0.01 250);
-  --sidebar-border: oklch(0.3 0.02 260);
-  --sidebar-ring: oklch(0.55 0.1 250);
+  --background: #061A30;
+  --foreground: #E8F0FB;
+  --card: #0C2742;
+  --card-foreground: #E8F0FB;
+  --popover: #0C2742;
+  --popover-foreground: #E8F0FB;
+  --primary: #1557A6;
+  --primary-foreground: #FFFFFF;
+  --secondary: #0F3157;
+  --secondary-foreground: #E8F0FB;
+  --muted: #0F3157;
+  --muted-foreground: #9DB4D0;
+  --accent: #123B66;
+  --accent-foreground: #E8F0FB;
+  --destructive: #F87171;
+  --border: #16375C;
+  --input: #16375C;
+  --ring: #FFB52E;
+  --gold: #FFB52E;
+  --gold-foreground: #082747;
+  --chart-1: #4C86C9;
+  --chart-2: #1557A6;
+  --chart-3: #FFB52E;
+  --chart-4: #16A34A;
+  --chart-5: #9DB4D0;
+  --sidebar: #04121F;
+  --sidebar-foreground: #CBD9EC;
+  --sidebar-primary: #FFB52E;
+  --sidebar-primary-foreground: #082747;
+  --sidebar-accent: #1557A6;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #103A5E;
+  --sidebar-ring: #1557A6;
 }
 
+/* Base element defaults: apply border/outline tokens everywhere, and set the
+   body background/text and base font from the theme tokens. */
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -128,3 +148,35 @@
     @apply font-sans;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Pastel card tones. Apply ONE of these (with Tailwind's `border` utility) to
+   decorative/informational cards so they stand out against the soft blue-gray
+   page background instead of being plain white. Text inherits the dark navy
+   foreground, so content stays readable. Border is a slightly darker shade of
+   each background. Defined outside @layer so they reliably override `bg-card`.
+--------------------------------------------------------------------------- */
+.tone-blue { background-color: #D9E9FF; border-color: #B9D4F4; }
+.tone-cream { background-color: #FFF0D9; border-color: #F1DAB2; }
+.tone-mint { background-color: #DDF3E4; border-color: #BBE4CA; }
+.tone-lavender { background-color: #E6E1FF; border-color: #CCC3F2; }
+.tone-peach { background-color: #FFE4CC; border-color: #F3CBA8; }
+.tone-teal { background-color: #D8F1EF; border-color: #B6E1DE; }
+.tone-sky { background-color: #D9F0FF; border-color: #B4DFF4; }
+
+/* Subtle, consistent lift-on-hover for interactive cards. */
+.card-hover { transition: box-shadow 0.2s ease, transform 0.2s ease; }
+.card-hover:hover { box-shadow: 0 10px 25px -12px rgba(16, 46, 80, 0.25); transform: translateY(-4px); }
+
+/* ---------------------------------------------------------------------------
+   Statistics-card grids. Add `stat-grid` to a grid of dashboard stat cards and
+   its direct children cycle through the pastel palette (blue, cream, mint,
+   lavender, peach) so the stat cards stand out from the light page background
+   and from each other, without editing each card individually.
+--------------------------------------------------------------------------- */
+.stat-grid > * { border-width: 1px; border-style: solid; }
+.stat-grid > *:nth-child(5n+1) { background-color: #D9E9FF; border-color: #B9D4F4; }
+.stat-grid > *:nth-child(5n+2) { background-color: #FFF0D9; border-color: #F1DAB2; }
+.stat-grid > *:nth-child(5n+3) { background-color: #DDF3E4; border-color: #BBE4CA; }
+.stat-grid > *:nth-child(5n+4) { background-color: #E6E1FF; border-color: #CCC3F2; }
+.stat-grid > *:nth-child(5n+5) { background-color: #FFE4CC; border-color: #F3CBA8; }

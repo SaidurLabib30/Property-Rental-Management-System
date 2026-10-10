@@ -1,38 +1,16 @@
 "use client";
 
-import { useState } from 'react';
-import { User, UserRole } from '@/types';
-import { mockUsers } from '@/data/mockData';
+import { useAuthContext } from "@/components/providers";
+export type { AuthUser } from "@/components/providers";
 
-export type AuthUser = {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-  phone: string;
-  verified: boolean;
-};
-
+/**
+ * Auth hook backed by real Supabase Auth (see `Providers` in
+ * `src/components/providers.tsx`). Exposes the current user plus
+ * sign-in / sign-up / sign-out actions.
+ *
+ * `logout` is kept as an alias of `signOut` for existing callers.
+ */
 export function useAuth() {
-  const [user, setUser] = useState<AuthUser | null>(null);
-
-  const login = (email: string, password: string, role: UserRole) => {
-    const found = mockUsers.find(u => u.email === email && u.role === role);
-    if (found && !found.banned) {
-      setUser({ id: found.id, name: found.name, email: found.email, role: found.role, phone: found.phone, verified: found.verified });
-      return true;
-    }
-    return false;
-  };
-
-  const logout = () => setUser(null);
-
-  const switchRole = (role: UserRole) => {
-    const found = mockUsers.find(u => u.role === role && !u.banned);
-    if (found) {
-      setUser({ id: found.id, name: found.name, email: found.email, role: found.role, phone: found.phone, verified: found.verified });
-    }
-  };
-
-  return { user, login, logout, switchRole };
+  const { user, loading, signIn, signUp, signOut } = useAuthContext();
+  return { user, loading, signIn, signUp, signOut, logout: signOut };
 }

@@ -1,5 +1,8 @@
 "use client";
 
+// Admin "Properties" page.
+// Lists every property on the platform with summary counts (total / available
+// / rented). Reads from mock data; Add/View buttons are placeholders.
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +10,7 @@ import { mockProperties } from '@/data/mockData';
 import { StatusBadge } from '@/components/dashboard/status-badge';
 
 export default function AdminPropertiesPage() {
+  // All properties (demo data); counts below are derived with .filter.
   const properties = mockProperties;
 
   return (
@@ -21,7 +25,7 @@ export default function AdminPropertiesPage() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="stat-grid grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Card className="border-0 shadow-sm">
             <CardContent className="p-6">
               <div className="text-sm text-muted-foreground mb-1">Total</div>
@@ -55,7 +59,7 @@ export default function AdminPropertiesPage() {
                     <div className="text-sm text-muted-foreground">{property.address}, {property.city}</div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="font-semibold">${property.price.toLocaleString()}/mo</span>
+                    <span className="font-semibold">৳ {property.price.toLocaleString()}/mo</span>
                     <StatusBadge variant={property.status === 'available' ? 'success' : 'secondary'}>{property.status}</StatusBadge>
                     <Button size="sm" variant="outline" className="h-8">View</Button>
                   </div>

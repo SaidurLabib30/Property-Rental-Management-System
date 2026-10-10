@@ -1,5 +1,8 @@
 "use client"
 
+// label.tsx
+// Form field label built on Radix UI's Label primitive. Links to an input via
+// htmlFor and dims itself when the associated control is disabled.
 import * as React from "react"
 import * as LabelPrimitive from "@radix-ui/react-label"
 import { cva, type VariantProps } from "class-variance-authority"

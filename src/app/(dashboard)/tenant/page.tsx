@@ -1,5 +1,9 @@
 "use client";
 
+// Tenant "Overview" page.
+// The tenant landing screen: quick stat cards (current rental, applications,
+// next payment, open tickets), the current rental summary, and a short list of
+// recent applications. The values here are static demo content.
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { StatusBadge } from '@/components/dashboard/status-badge';
 import { Building2 } from 'lucide-react';
@@ -12,7 +16,7 @@ export default function TenantDashboard() {
           <p className="text-muted-foreground">Welcome back, Sarah!</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="stat-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card className="border-0 shadow-sm">
             <CardContent className="p-6">
               <div className="text-sm text-muted-foreground mb-1">My Rental</div>
@@ -28,7 +32,7 @@ export default function TenantDashboard() {
           <Card className="border-0 shadow-sm">
             <CardContent className="p-6">
               <div className="text-sm text-muted-foreground mb-1">Next Payment</div>
-              <div className="text-2xl font-bold">$3,500</div>
+              <div className="text-2xl font-bold">৳ 3,500</div>
             </CardContent>
           </Card>
           <Card className="border-0 shadow-sm">
@@ -53,7 +57,7 @@ export default function TenantDashboard() {
                   <div>
                     <h3 className="font-semibold">Luxury Downtown Apartment</h3>
                     <p className="text-sm text-muted-foreground">123 Main St, New York, NY</p>
-                    <p className="text-sm font-medium text-primary">$3,500/month</p>
+                    <p className="text-sm font-medium text-primary">৳ 3,500/month</p>
                   </div>
                 </div>
                 <div className="pt-3 border-t">
@@ -69,6 +73,7 @@ export default function TenantDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
+                {/* Recent applications — static demo rows with a colored status badge */}
                 {[
                   { property: 'Modern Condo with Ocean View', status: 'under_review', date: '2024-05-25' },
                   { property: 'Elegant Villa with Pool', status: 'pending', date: '2024-05-20' },

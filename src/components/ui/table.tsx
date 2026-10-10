@@ -1,9 +1,15 @@
 "use client"
 
+// Table: a set of styled wrappers around the native HTML table elements.
+// No external primitive - just <table>, <thead>, <tbody>, etc. with styling.
+// Exports Table, TableHeader, TableBody, TableFooter, TableHead, TableRow,
+// TableCell, and TableCaption.
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+// The <table> itself, wrapped in a scrollable container for horizontal overflow.
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
     <div
@@ -19,6 +25,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
   )
 }
 
+// The table head section (<thead>) holding the column headings.
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
@@ -29,6 +36,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   )
 }
 
+// The table body section (<tbody>) holding the data rows.
 function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
   return (
     <tbody
@@ -39,6 +47,7 @@ function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
   )
 }
 
+// The table footer section (<tfoot>), e.g. for a totals row.
 function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
   return (
     <tfoot
@@ -49,6 +58,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
   )
 }
 
+// A single table row (<tr>) with hover and selected styles.
 function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
   return (
     <tr
@@ -62,6 +72,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
   )
 }
 
+// A column heading cell (<th>).
 function TableHead({ className, ...props }: React.ComponentProps<"th">) {
   return (
     <th
@@ -75,6 +86,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
   )
 }
 
+// A standard data cell (<td>).
 function TableCell({ className, ...props }: React.ComponentProps<"td">) {
   return (
     <td
@@ -88,6 +100,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
   )
 }
 
+// A caption describing the table, shown below it.
 function TableCaption({ className, ...props }: React.ComponentProps<"caption">) {
   return (
     <caption

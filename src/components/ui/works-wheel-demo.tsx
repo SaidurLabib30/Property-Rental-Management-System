@@ -1,5 +1,8 @@
 "use client";
 
+// works-wheel-demo.tsx
+// Example usage of the WorksWheel component with a sample list of artworks.
+// Images are served from a remote CDN so the demo needs no local assets.
 import { WorksWheel, type WorksWheelItem } from "@/components/ui/works-wheel";
 
 // Placeholder art served straight off the crafterui CDN so the demo works the

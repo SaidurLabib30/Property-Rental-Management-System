@@ -1,23 +1,34 @@
 "use client"
 
+// DropdownMenu UI primitive: a styled wrapper around Radix UI's Dropdown Menu.
+// A menu that opens from a trigger (e.g. a button) and shows clickable items.
+// Exports all the building blocks: DropdownMenu (root), DropdownMenuTrigger,
+// DropdownMenuContent, groups/labels/separators, plain items, checkbox and
+// radio items, keyboard-shortcut hints, and nested submenu parts.
+// Icons (check, chevron, circle) come from lucide-react.
+
 import * as React from "react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { Check, ChevronRight, Circle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+// Root component that controls the open/closed state of the whole menu.
 function DropdownMenu({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
   return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />
 }
 
+// Renders the menu into a portal (outside the normal DOM flow).
 function DropdownMenuPortal({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Portal>) {
   return <DropdownMenuPrimitive.Portal data-slot="dropdown-menu-portal" {...props} />
 }
 
+// The element the user clicks to open the menu.
 function DropdownMenuTrigger({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
   return <DropdownMenuPrimitive.Trigger data-slot="dropdown-menu-trigger" {...props} />
 }
 
+// The floating panel that holds the menu items (rendered in a portal).
 function DropdownMenuContent({ className, sideOffset = 4, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
   return (
     <DropdownMenuPrimitive.Portal>
@@ -34,10 +45,12 @@ function DropdownMenuContent({ className, sideOffset = 4, ...props }: React.Comp
   )
 }
 
+// Groups related menu items together.
 function DropdownMenuGroup({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Group>) {
   return <DropdownMenuPrimitive.Group data-slot="dropdown-menu-group" {...props} />
 }
 
+// A single clickable menu row; `inset` adds left padding, `variant` can be "destructive".
 function DropdownMenuItem({ className, inset, variant = "default", ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Item> & {
   inset?: boolean
   variant?: "default" | "destructive"
@@ -57,6 +70,7 @@ function DropdownMenuItem({ className, inset, variant = "default", ...props }: R
   )
 }
 
+// A menu item with a toggleable check mark on the left.
 function DropdownMenuCheckboxItem({ className, children, checked, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem>) {
   return (
     <DropdownMenuPrimitive.CheckboxItem
@@ -78,10 +92,12 @@ function DropdownMenuCheckboxItem({ className, children, checked, ...props }: Re
   )
 }
 
+// Wraps radio items so only one can be selected at a time.
 function DropdownMenuRadioGroup({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.RadioGroup>) {
   return <DropdownMenuPrimitive.RadioGroup data-slot="dropdown-menu-radio-group" {...props} />
 }
 
+// A menu item showing a filled dot when it is the selected radio choice.
 function DropdownMenuRadioItem({ className, children, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.RadioItem>) {
   return (
     <DropdownMenuPrimitive.RadioItem
@@ -102,6 +118,7 @@ function DropdownMenuRadioItem({ className, children, ...props }: React.Componen
   )
 }
 
+// A non-clickable heading used to label a group of items.
 function DropdownMenuLabel({ className, inset, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Label> & { inset?: boolean }) {
   return (
     <DropdownMenuPrimitive.Label
@@ -113,6 +130,7 @@ function DropdownMenuLabel({ className, inset, ...props }: React.ComponentProps<
   )
 }
 
+// A thin horizontal line dividing groups of menu items.
 function DropdownMenuSeparator({ className, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
   return (
     <DropdownMenuPrimitive.Separator
@@ -123,6 +141,7 @@ function DropdownMenuSeparator({ className, ...props }: React.ComponentProps<typ
   )
 }
 
+// Right-aligned muted text for showing a keyboard shortcut next to an item.
 function DropdownMenuShortcut({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
@@ -133,10 +152,12 @@ function DropdownMenuShortcut({ className, ...props }: React.ComponentProps<"spa
   )
 }
 
+// Root for a nested submenu that opens off a parent item.
 function DropdownMenuSub({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Sub>) {
   return <DropdownMenuPrimitive.Sub data-slot="dropdown-menu-sub" {...props} />
 }
 
+// The item that opens its submenu (shows a chevron on the right).
 function DropdownMenuSubTrigger({ className, inset, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.SubTrigger> & { inset?: boolean }) {
   return (
     <DropdownMenuPrimitive.SubTrigger
@@ -151,6 +172,7 @@ function DropdownMenuSubTrigger({ className, inset, ...props }: React.ComponentP
   )
 }
 
+// The floating panel that holds a submenu's items.
 function DropdownMenuSubContent({ className, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
   return (
     <DropdownMenuPrimitive.SubContent

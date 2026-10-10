@@ -1,3 +1,7 @@
+// Owner "Settings" page.
+// A static settings form for editing profile details and changing the
+// password. The inputs use defaultValue placeholders and are not yet wired
+// to a save action.
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,6 +15,7 @@ export default function OwnerSettingsPage() {
           <p className="text-muted-foreground">Manage your account settings</p>
         </div>
 
+        {/* Profile details card */}
         <Card className="border-0 shadow-sm">
           <CardContent className="p-6 space-y-4">
             <div>
@@ -29,6 +34,7 @@ export default function OwnerSettingsPage() {
           </CardContent>
         </Card>
 
+        {/* Change-password card */}
         <Card className="border-0 shadow-sm">
           <CardContent className="p-6 space-y-4">
             <h3 className="font-semibold">Change Password</h3>

@@ -1,5 +1,9 @@
 "use client"
 
+// popover.tsx
+// Floating popover built on Radix UI. Exports Popover (root), PopoverTrigger
+// (the clickable element), PopoverContent (the floating panel, rendered in a
+// portal), and PopoverAnchor (optional custom anchor position).
 import * as React from "react"
 import * as PopoverPrimitive from "@radix-ui/react-popover"
 

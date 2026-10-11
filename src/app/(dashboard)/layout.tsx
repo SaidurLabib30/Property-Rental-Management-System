@@ -65,8 +65,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-72 p-0 border-sidebar-border">
-                <SidebarContent role={role} />
+              {/* Mobile drawer sized to ~50% of the screen (was a fixed w-72,
+                  which was ~75% of a small phone). `compact` tightens the inner
+                  spacing so the menu fits the narrower width. */}
+              <SheetContent side="left" className="w-[50vw] p-0 border-sidebar-border">
+                <SidebarContent role={role} compact />
               </SheetContent>
             </Sheet>
             {/* Page title taken from the last part of the URL (falls back to "Overview"). */}

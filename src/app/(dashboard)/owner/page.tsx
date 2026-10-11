@@ -1,8 +1,8 @@
 // Owner dashboard "Overview" page.
-// Shows a welcome header, a featured-properties carousel (WorksWheelDemo),
-// summary stat cards, and lists of recent payments and the owner's properties.
+// Shows a welcome header, an auto-playing Featured Properties slider, summary
+// stat cards, and lists of recent payments and the owner's properties.
 // The numbers and lists here are hard-coded sample data, not live data yet.
-import WorksWheelDemo from '@/components/ui/works-wheel-demo';
+import { FeaturedPropertiesSlider } from '@/components/dashboard/featured-properties-slider';
 
 // The default export is the page component Next.js renders for this route.
 export default function OwnerDashboard() {
@@ -14,27 +14,11 @@ export default function OwnerDashboard() {
           <p className="text-muted-foreground">Welcome back! Here is what is happening with your properties.</p>
         </div>
 
-        {/* Featured properties section: a search box plus a draggable carousel */}
+        {/* Featured properties: an auto-playing slider of live listings. */}
         <div className="bg-card rounded-xl border p-6 shadow-sm">
-          <h3 className="font-semibold mb-4 text-center">Featured Properties</h3>
-          <p className="text-sm text-muted-foreground text-center mb-4">Scroll or drag to browse</p>
-          <div className="flex justify-center mb-4">
-            <div className="relative w-full max-w-md">
-              {/* Search field (visual only for now; it has no onChange handler) */}
-              <input
-                type="text"
-                placeholder="Search properties..."
-                className="w-full h-10 pl-10 pr-4 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-              />
-              <svg className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
-          </div>
-          {/* The interactive carousel component showing featured properties */}
-          <div className="h-[400px]">
-            <WorksWheelDemo />
-          </div>
+          <h3 className="font-semibold mb-1 text-center">Featured Properties</h3>
+          <p className="text-sm text-muted-foreground text-center mb-6">Available listings — the slider plays automatically and updates as properties are added.</p>
+          <FeaturedPropertiesSlider />
         </div>
 
         {/* Row of four summary stat cards (values are static sample numbers) */}

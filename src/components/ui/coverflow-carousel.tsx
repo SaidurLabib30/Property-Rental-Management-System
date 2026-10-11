@@ -18,7 +18,9 @@ export interface CoverflowSlide {
   src: string;
   alt: string;
   title?: string;
-  subtitle?: string;
+  // Plain string for simple captions, or rich nodes when a caller wants to style
+  // parts of the subtitle (e.g. a prominent price alongside a quieter location).
+  subtitle?: React.ReactNode;
   meta?: { label: string; value: string }[];
 }
 

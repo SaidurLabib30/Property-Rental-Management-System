@@ -14,6 +14,10 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { formatBDT } from '@/lib/currency';
 
+// Shown when a property has no image, or its image fails to load. It's a real
+// asset in /public so it always resolves (unlike the old missing placeholder).
+const FALLBACK_IMAGE = '/images/placeholder.svg';
+
 // Props: the property to render, an optional favorite callback, and optional
 // extra classes. The card's visual style is fixed so all cards look the same.
 interface PropertyCardProps {
@@ -35,7 +39,7 @@ export function PropertyCard({ property, onFavorite, className }: PropertyCardPr
       {/* Fixed 4:3 image area (object-cover) so every image is the same size. */}
       <div className="relative aspect-[4/3] overflow-hidden bg-muted">
         <img
-          src={imgError ? '/images/placeholder.jpg' : property.images[0]}
+          src={imgError || !property.images?.[0] ? FALLBACK_IMAGE : property.images[0]}
           alt={property.title}
           onError={() => setImgError(true)}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"

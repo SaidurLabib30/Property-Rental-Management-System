@@ -13,14 +13,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { mockProperties, mockUsers } from '@/data/mockData';
+import { mockUsers } from '@/data/mockData';
+import { useProperties, addProperty, updateProperty, removeProperty } from '@/lib/properties-store';
 import { Property } from '@/types';
 import { DashboardCard } from '@/components/dashboard/dashboard-card';
 import { Building2, BedDouble, Bath, Square } from 'lucide-react';
 
 export default function OwnerPropertiesPage() {
-  // The list of properties shown, pre-filtered to those owned by user 'u1'.
-  const [properties, setProperties] = useState(mockProperties.filter(p => p.ownerId === 'u1'));
+  // The owner's listings, read live from the shared property store (seeded from
+  // mock data). Adding/editing/deleting below updates the store, so changes are
+  // reflected here and in the dashboard's Featured slider without a refresh.
+  const properties = useProperties().filter(p => p.ownerId === 'u1');
   // Controls whether the add/edit dialog is open.
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   // Holds the property being edited; null means we are adding a new one.
@@ -72,9 +75,15 @@ export default function OwnerPropertiesPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (editingProperty) {
-      // Editing: replace the matching property with the updated field values,
+      // Editing: merge the updated field values into the stored property,
       // converting the numeric fields back from strings to numbers.
-      setProperties(prev => prev.map(p => p.id === editingProperty.id ? { ...p, ...formData, price: Number(formData.price), bedrooms: Number(formData.bedrooms), bathrooms: Number(formData.bathrooms), area: Number(formData.area) } : p));
+      updateProperty(editingProperty.id, {
+        ...formData,
+        price: Number(formData.price),
+        bedrooms: Number(formData.bedrooms),
+        bathrooms: Number(formData.bathrooms),
+        area: Number(formData.area),
+      });
     } else {
       // Adding: build a brand-new property object with sensible defaults
       // and a unique id based on the current timestamp.
@@ -86,22 +95,22 @@ export default function OwnerPropertiesPage() {
         bathrooms: Number(formData.bathrooms),
         area: Number(formData.area),
         status: 'available',
-        images: ['/images/placeholder.jpg'],
+        images: [],
         amenities: ['WiFi'],
         ownerId: 'u1',
         featured: false,
         createdAt: new Date().toISOString(),
         country: 'USA',
       };
-      setProperties(prev => [...prev, newProperty]);
+      addProperty(newProperty);
     }
     // Close the dialog once the add/edit is done.
     setIsDialogOpen(false);
   };
 
-  // Remove a property from the list by filtering out the matching id.
+  // Remove a property from the store by id.
   const handleDelete = (id: string) => {
-    setProperties(prev => prev.filter(p => p.id !== id));
+    removeProperty(id);
   };
 
   return (

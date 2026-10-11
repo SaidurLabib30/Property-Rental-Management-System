@@ -22,6 +22,32 @@ values
   ('00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000008', 'authenticated', 'authenticated', 'laura@example.com',   crypt('password123', gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{"name":"Laura Martinez","role":"tenant","phone":"+1 555-0108"}', now(), now())
 on conflict (id) do nothing;
 
+-- IMPORTANT: GoTrue loads a user row during sign-in and scans these token
+-- columns as non-null strings. Inserting auth.users directly (above) leaves
+-- them NULL on current Postgres/GoTrue, which makes EVERY sign-in fail with
+-- "Database error querying schema". Normalise them to '' so auth works.
+-- This block is also safe to run on its own in the Supabase SQL editor to
+-- repair demo users that were already seeded before this fix.
+update auth.users set
+  confirmation_token         = coalesce(confirmation_token, ''),
+  recovery_token             = coalesce(recovery_token, ''),
+  email_change               = coalesce(email_change, ''),
+  email_change_token_new     = coalesce(email_change_token_new, ''),
+  email_change_token_current = coalesce(email_change_token_current, ''),
+  phone_change               = coalesce(phone_change, ''),
+  phone_change_token         = coalesce(phone_change_token, ''),
+  reauthentication_token     = coalesce(reauthentication_token, '')
+where id in (
+  '00000000-0000-0000-0000-000000000001',
+  '00000000-0000-0000-0000-000000000002',
+  '00000000-0000-0000-0000-000000000003',
+  '00000000-0000-0000-0000-000000000004',
+  '00000000-0000-0000-0000-000000000005',
+  '00000000-0000-0000-0000-000000000006',
+  '00000000-0000-0000-0000-000000000007',
+  '00000000-0000-0000-0000-000000000008'
+);
+
 insert into auth.identities (provider_id, user_id, identity_data, provider, last_sign_in_at, created_at, updated_at)
 values
   ('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001', '{"sub":"00000000-0000-0000-0000-000000000001","email":"john@example.com"}', 'email', now(), now(), now()),

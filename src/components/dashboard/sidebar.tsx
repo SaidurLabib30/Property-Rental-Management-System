@@ -70,8 +70,10 @@ const roleConfig: Record<UserRole, { title: string; items: { href: string; label
 /* APPEND-SIDEBAR */
 
 // Shared inner content: brand header + vertical nav. Used by both the fixed
-// desktop rail and the mobile drawer so they always look identical.
-export function SidebarContent({ role }: SidebarProps) {
+// desktop rail and the mobile drawer so they always look identical. Pass
+// `compact` (the mobile drawer does) to tighten spacing/type for a narrow
+// (~40vw) drawer; the desktop rail leaves it off and is unchanged.
+export function SidebarContent({ role, compact = false }: SidebarProps & { compact?: boolean }) {
   // Current URL path, used to highlight the active link.
   const pathname = usePathname();
   // The menu config for this user's role.
@@ -80,16 +82,23 @@ export function SidebarContent({ role }: SidebarProps) {
   return (
     <div className="flex h-full flex-col bg-sidebar text-sidebar-foreground">
       {/* Brand: amber logo mark + project name and the role's dashboard title */}
-      <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-6">
+      <div
+        className={cn(
+          'flex h-16 items-center gap-2 border-b border-sidebar-border',
+          // Narrow mobile drawer: tighter padding, and extra right padding so
+          // the brand clears the drawer's close (X) button.
+          compact ? 'px-3 pr-10' : 'px-6'
+        )}
+      >
         <Building2 className="h-6 w-6 shrink-0 text-sidebar-primary" />
-        <div className="leading-tight">
-          <div className="text-sm font-bold text-white">Property Rental</div>
-          <div className="text-[11px] text-sidebar-foreground/70">{config.title}</div>
+        <div className="min-w-0 leading-tight">
+          <div className={cn('font-bold text-white', compact ? 'text-xs' : 'text-sm')}>Property Rental</div>
+          <div className="truncate text-[11px] text-sidebar-foreground/70">{config.title}</div>
         </div>
       </div>
 
       {/* Vertical navigation: one link per row, icon beside its label */}
-      <nav className="flex-1 overflow-y-auto p-3 space-y-1">
+      <nav className={cn('flex-1 overflow-y-auto space-y-1', compact ? 'p-2' : 'p-3')}>
         {config.items.map((item) => {
           // A link is "active" when it exactly matches the URL, or (for
           // non-root links) when the URL starts with the link's path.
@@ -99,7 +108,9 @@ export function SidebarContent({ role }: SidebarProps) {
               key={item.href}
               href={item.href}
               className={cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                'flex items-center rounded-lg font-medium transition-colors',
+                // Compact spacing/size so labels fit the narrow mobile drawer.
+                compact ? 'gap-2 px-2.5 py-2 text-[13px] leading-tight' : 'gap-3 px-3 py-2 text-sm',
                 isActive
                   // Active row: solid blue pill with white text and an amber icon.
                   ? 'bg-sidebar-accent text-sidebar-accent-foreground'

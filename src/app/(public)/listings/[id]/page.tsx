@@ -129,23 +129,27 @@ function PropertyDetails({ params }: { params: Promise<{ id: string }> }) {
               </div>
             </div>
 
-            {/* Quick facts: bedrooms, bathrooms, area, and property type. */}
-            <div className="grid grid-cols-4 gap-4">
+            {/* Quick facts: premium navy cards with gold-accented icons. Every
+                value is read live from the property's own data (never hardcoded). */}
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
               {[
                 { label: 'Bedrooms', value: property.bedrooms, icon: BedDouble },
                 { label: 'Bathrooms', value: property.bathrooms, icon: Bath },
                 { label: 'Area', value: `${property.area.toLocaleString()} sqft`, icon: Square },
                 { label: 'Type', value: property.propertyType, icon: HomeIcon },
               ].map((stat, i) => (
-                <Card key={i} className="border-0 shadow-sm">
-                  <CardContent className="flex items-center gap-3 p-4">
-                    <stat.icon className="h-5 w-5 text-primary" />
-                    <div>
-                      <div className="text-xs text-muted-foreground">{stat.label}</div>
-                      <div className="font-semibold capitalize">{stat.value}</div>
-                    </div>
-                  </CardContent>
-                </Card>
+                <div
+                  key={i}
+                  className="flex items-center gap-3 rounded-xl bg-gradient-to-br from-[#123B66] to-[#0C2742] p-4 shadow-md ring-1 ring-white/10"
+                >
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gold/15 text-gold">
+                    <stat.icon className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[11px] font-medium uppercase tracking-wide text-white/60">{stat.label}</div>
+                    <div className="truncate text-lg font-bold capitalize text-white">{stat.value}</div>
+                  </div>
+                </div>
               ))}
             </div>
 
@@ -194,12 +198,12 @@ function PropertyDetails({ params }: { params: Promise<{ id: string }> }) {
                   </Badge>
                 </div>
                 <div className="space-y-3">
-                  <Button className="w-full" size="lg">Apply Now</Button>
-                  <Button variant="outline" className="w-full gap-2">
+                  <Button size="lg" className="w-full shadow-sm hover:shadow-md">Apply Now</Button>
+                  <Button variant="outline" size="lg" className="w-full gap-2 border-primary/25 text-primary hover:bg-primary/5 hover:text-primary">
                     <Phone className="h-4 w-4" />
                     Contact Owner
                   </Button>
-                  <Button variant="outline" className="w-full gap-2">
+                  <Button variant="outline" size="lg" className="w-full gap-2 border-primary/25 text-primary hover:bg-primary/5 hover:text-primary">
                     <Mail className="h-4 w-4" />
                     Send Message
                   </Button>

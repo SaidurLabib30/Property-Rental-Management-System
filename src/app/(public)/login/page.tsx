@@ -18,16 +18,54 @@ export default function LoginPage() {
   const { signIn } = useAuth();
   const router = useRouter();
 
+  // Turn a Supabase auth failure into a clear, accurate message. "Invalid
+  // credentials" is shown ONLY for genuinely wrong email/password; every other
+  // failure (unconfirmed email, disabled provider, unreachable server, rate
+  // limiting) gets its own message so the real cause isn't hidden.
+  const describeSignInError = (message: string | null, code?: string) => {
+    const m = (message ?? '').toLowerCase();
+    if (code === 'invalid_credentials' || m.includes('invalid login credentials')) {
+      return 'Invalid credentials. Please try again.';
+    }
+    if (code === 'email_not_confirmed' || m.includes('email not confirmed')) {
+      return 'Please confirm your email address first — check your inbox for the confirmation link, then sign in.';
+    }
+    if (code === 'email_provider_disabled' || m.includes('email logins are disabled')) {
+      return 'Email sign-in is disabled for this project. Enable the Email provider in Supabase → Authentication.';
+    }
+    if (code === 'over_request_rate_limit' || m.includes('rate limit')) {
+      return 'Too many attempts. Please wait a moment and try again.';
+    }
+    if (m.includes('database error')) {
+      return 'The sign-in service hit a database error. If the demo users were seeded with SQL, their auth rows need repairing — re-run the fixed seed, then try again.';
+    }
+    if (m.includes('failed to fetch') || m.includes('networkerror') || m.includes('load failed')) {
+      return "Can't reach the authentication server. Check your connection and that the app's Supabase settings are configured, then try again.";
+    }
+    return message || 'Something went wrong while signing in. Please try again.';
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
-    const { error: signInError, role } = await signIn(email, password);
-    setLoading(false);
-    if (signInError) {
-      setError('Invalid credentials. Please try again.');
+
+    // Validate before calling the server so missing fields get a clear message
+    // rather than a generic auth failure.
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail || !password) {
+      setError('Please enter both your email and password.');
       return;
     }
+
+    setLoading(true);
+    const { error: signInError, code, role } = await signIn(normalizedEmail, password);
+    setLoading(false);
+    if (signInError) {
+      setError(describeSignInError(signInError, code));
+      return;
+    }
+    // Role comes from the user's stored profile, never from client input, so a
+    // user can only reach the dashboard their assigned role allows.
     router.push(`/${role ?? 'tenant'}`);
   };
 

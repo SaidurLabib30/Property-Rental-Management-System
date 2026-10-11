@@ -35,7 +35,7 @@ type AuthContextValue = {
   signIn: (
     email: string,
     password: string
-  ) => Promise<{ error: string | null; role?: UserRole }>;
+  ) => Promise<{ error: string | null; code?: string; role?: UserRole }>;
   signUp: (
     input: SignUpInput
   ) => Promise<{ error: string | null; needsEmailConfirmation?: boolean }>;
@@ -118,7 +118,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
         email,
         password,
       });
-      if (error) return { error: error.message };
+      // Pass the auth error code through so the UI can distinguish genuinely
+      // wrong credentials from other failures (unconfirmed email, provider
+      // disabled, network/config errors) instead of lumping them together.
+      if (error) return { error: error.message, code: error.code };
       const u = await resolveUser(data.session);
       setUser(u);
       return { error: null, role: u?.role };

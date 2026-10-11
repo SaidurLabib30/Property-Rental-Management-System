@@ -2,8 +2,10 @@
 
 // Admin "Properties" page.
 // Lists every property on the platform with summary counts (total / available
-// / rented). Reads from mock data; Add/View buttons are placeholders.
+// / rented). Reads from mock data. The View button opens that property's
+// public details page; Add is still a placeholder.
 import { Plus } from 'lucide-react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { mockProperties } from '@/data/mockData';
@@ -61,7 +63,9 @@ export default function AdminPropertiesPage() {
                   <div className="flex items-center gap-3">
                     <span className="font-semibold">৳ {property.price.toLocaleString()}/mo</span>
                     <StatusBadge variant={property.status === 'available' ? 'success' : 'secondary'}>{property.status}</StatusBadge>
-                    <Button size="sm" variant="outline" className="h-8">View</Button>
+                    <Link href={`/listings/${property.id}`}>
+                      <Button size="sm" variant="outline" className="h-8">View</Button>
+                    </Link>
                   </div>
                 </div>
               ))}

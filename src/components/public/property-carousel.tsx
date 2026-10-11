@@ -20,7 +20,21 @@ export default function PropertyCarousel() {
     src: p.images[0] ?? "",
     alt: p.title,
     title: p.title,
-    subtitle: `${formatBDT(p.price)} / month · ${p.city}, ${p.state}`,
+    // Price keeps its own line (bold) with a quieter "/ month" suffix and the
+    // location just below. Compact ~half-size type, all pure black.
+    subtitle: (
+      <span className="flex flex-col items-center gap-0.5">
+        <span className="text-sm font-extrabold leading-none text-black sm:text-base lg:text-lg">
+          {formatBDT(p.price)}
+          <span className="ml-1 align-middle text-[10px] font-medium text-black sm:text-[11px]">
+            / month
+          </span>
+        </span>
+        <span className="text-[11px] font-medium text-black sm:text-xs">
+          {p.city}, {p.state}
+        </span>
+      </span>
+    ),
     meta: [
       { label: "Beds", value: String(p.bedrooms) },
       { label: "Baths", value: String(p.bathrooms) },
@@ -31,8 +45,24 @@ export default function PropertyCarousel() {
   if (slides.length === 0) return null;
 
   return (
-    // Force caption text to light colors so it stays readable on the dark hero.
-    <div className="w-full overflow-hidden bg-transparent [&_p]:!text-white [&_dt]:!text-white/70 [&_dd]:!text-white">
+    // Hero caption styling (scoped to this wrapper so only the hero carousel is
+    // affected). All property text is pure black (#000000) on a compact light
+    // info panel — kept small in width, padding and type (~half the previous
+    // size), and still responsive, so the box takes up noticeably less space.
+    <div
+      className={[
+        "w-full overflow-hidden bg-transparent",
+        // Compact light info panel behind the caption (the only `.animate-in`
+        // descendant): narrower max-width and tighter padding shrink the box,
+        // while black text stays legible over the dark navy hero.
+        "[&_.animate-in]:mx-auto [&_.animate-in]:max-w-[260px] [&_.animate-in]:rounded-xl [&_.animate-in]:border [&_.animate-in]:border-white/60 [&_.animate-in]:bg-white/90 [&_.animate-in]:px-4 [&_.animate-in]:py-2.5 [&_.animate-in]:shadow-md [&_.animate-in]:backdrop-blur-sm",
+        // Property name (first caption line): bold, black, ~half its old size.
+        "[&_p:first-of-type]:text-[11px] [&_p:first-of-type]:font-bold [&_p:first-of-type]:tracking-tight [&_p:first-of-type]:text-black",
+        "sm:[&_p:first-of-type]:text-sm lg:[&_p:first-of-type]:text-base",
+        // Specs table (beds / baths / area): small black text, tightened gaps.
+        "[&_dl]:mt-2 [&_dl]:text-[11px] sm:[&_dl]:text-xs [&_dl>div]:py-0.5 [&_dt]:text-black [&_dd]:font-semibold [&_dd]:text-black",
+      ].join(" ")}
+    >
       <CoverflowCarousel slides={slides} showCaption autoplay cardWidth="clamp(148px, 18vw, 220px)" />
     </div>
   );
